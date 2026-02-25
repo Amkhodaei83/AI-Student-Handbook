@@ -1,0 +1,39 @@
+name: CI Validation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches:[ "main" ]
+
+jobs:
+  validate:
+    name: Validate Content and Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check Python Syntax
+        # Validates that any Python scripts added to the repository have valid syntax
+        run: |
+          find . -name "*.py" -exec python -m py_compile {} +
+          echo "Python syntax check passed."
+
+      - name: Validate Markdown
+        # Uses standard markdownlint to check formatting. 
+        # continue-on-error is true initially so we don't block PRs strictly on formatting.
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            **/*.md
+            !node_modules/**
+        continue-on-error: true
+
+      - name: Report Success
+        run: echo "Validation complete! Repository is in good health."
