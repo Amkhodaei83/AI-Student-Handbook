@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Stage Companion Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --card-bg-active: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --accent: #00e5ff; 
+            --keyword: #ffdd00; 
+            --cue: #ff0055;
+            --success: #00ff9d;
+            --btn-bg: #333;
+            /* Dynamic Font Size Variable */
+            --base-size: 20px; 
+        }
+code
+Code
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 90px 12px 100px 12px;
+        /* This variable controls the size of everything text-related */
+        font-size: var(--base-size); 
+        line-height: 1.5;
+        transition: background 0.3s;
+    }
+
+    /* --- Scroll Progress Bar --- */
+    #progressBar {
+        position: fixed;
+        top: 75px; /* Moved down slightly to fit thicker header */
+        left: 0;
+        height: 4px;
+        background: var(--accent);
+        width: 0%;
+        z-index: 1001;
+        transition: width 0.1s;
+    }
+
+    /* --- Fixed Header --- */
+    .fixed-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.95);
+        backdrop-filter: blur(8px);
+        padding: 5px 12px;
+        display: grid;
+        grid-template-columns: auto 1fr auto; /* Timer - Slider - Buttons */
+        align-items: center;
+        border-bottom: 1px solid #333;
+        z-index: 1000;
+        height: 75px;
+        gap: 15px;
+    }
+
+    /* --- Timer --- */
+    .timer-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 60px;
+    }
+
+    .timer-box {
+        font-variant-numeric: tabular-nums;
+        font-size: 20px; /* Fixed size for timer */
+        font-weight: 700;
+        color: var(--text-secondary);
+        cursor: pointer;
+        user-select: none;
+        line-height: 1;
+    }
+
+    .timer-reset {
+        font-size: 12px;
+        color: #555;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 2px;
+        margin-top: 2px;
+    }
+
+    /* --- Slider Control --- */
+    .slider-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .font-icon {
+        color: #555;
+        font-weight: bold;
+        font-family: serif;
+        user-select: none;
+    }
+
+    input[type=range] {
+        -webkit-appearance: none;
+        width: 100%;
+        max-width: 150px;
+        background: transparent;
+    }
+
+    input[type=range]:focus { outline: none; }
+
+    /* Slider Track */
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 6px;
+        cursor: pointer;
+        background: #333;
+        border-radius: 3px;
+    }
+    
+    /* Slider Thumb */
+    input[type=range]::-webkit-slider-thumb {
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -6px; /* center on track */
+        box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+    }
+
+    /* --- Buttons --- */
+    .controls { display: flex; gap: 8px; }
+
+    .btn {
+        background: var(--btn-bg);
+        color: white;
+        border: 1px solid #444;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 14px; /* Fixed size for buttons */
+        font-weight: 600;
+        cursor: pointer;
+        height: 36px;
+    }
+    
+    .btn.active {
+        background: var(--accent);
+        color: black;
+        border-color: var(--accent);
+    }
+
+    .btn-danger { color: #ff5555; border-color: #552222; }
+
+    /* --- Status Indicators --- */
+    #wakeLockStatus {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        color: #333;
+        pointer-events: none;
+    }
+    #wakeLockStatus.active { color: var(--success); }
+
+    /* --- Cards --- */
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        padding: 1.2rem; /* Relative padding */
+        margin-bottom: 24px;
+        border-left: 6px solid #333;
+        transition: all 0.3s ease;
+        opacity: 0.5;
+        transform: scale(0.98);
+    }
+
+    .card.active-card {
+        opacity: 1;
+        transform: scale(1);
+        background-color: var(--card-bg-active);
+        border-left-color: var(--accent);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #444;
+        padding-bottom: 0.5rem;
+    }
+
+    .slide-badge {
+        background: #333;
+        color: var(--accent);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.7em;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .time-budget {
+        color: #777;
+        font-family: monospace;
+        font-size: 0.7em;
+    }
+
+    /* --- Content Styling --- */
+    .editable-content {
+        outline: none;
+        white-space: pre-wrap;
+    }
+
+    .editable-content[contenteditable="true"] {
+        border: 1px dashed #555;
+        padding: 15px;
+        background: #111;
+        border-radius: 8px;
+    }
+
+    .kw { color: var(--keyword); font-weight: 700; border-bottom: 1px dotted rgba(255, 215, 0, 0.3); }
+    
+    .cue { 
+        display: inline-block;
+        color: var(--cue);
+        font-weight: 600;
+        font-size: 0.7em;
+        border: 1px solid var(--cue);
+        padding: 1px 5px;
+        border-radius: 4px;
+        margin-right: 6px;
+        vertical-align: middle;
+        text-transform: uppercase;
+    }
+
+    .bullet {
+        display: flex;
+        margin-bottom: 0.5em;
+    }
+    .bullet::before {
+        content: "•";
+        color: var(--accent);
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-right: 0.5em;
+        line-height: 1.2;
+    }
+
+    body.editing .card { opacity: 1; transform: none; border-left-style: dashed; }
+    
+    footer {
+        text-align: center;
+        color: #444;
+        font-size: 0.7rem;
+        margin-top: 60px;
+        padding-bottom: 40px;
+    }
+</style>
+</head>
+<body>
+code
+Code
+<div class="fixed-header">
+    <!-- 1. Timer -->
+    <div class="timer-container">
+        <div class="timer-box" id="timerDisplay" onclick="toggleTimer()">00:00</div>
+        <button class="timer-reset" onclick="resetTimer()">↺ Reset</button>
+    </div>
+
+    <!-- 2. Font Size Slider -->
+    <div class="slider-wrapper">
+        <span class="font-icon" style="font-size: 14px">A</span>
+        <input type="range" id="sizeSlider" min="14" max="40" value="20" step="1">
+        <span class="font-icon" style="font-size: 22px">A</span>
+    </div>
+
+    <!-- 3. Edit Buttons -->
+    <div class="controls">
+        <button class="btn btn-danger" onclick="hardReset()">Del</button>
+        <button class="btn" id="editBtn" onclick="toggleEditMode()">Edit</button>
+    </div>
+</div>
+
+<div id="progressBar"></div>
+
+<!-- MAIN CONTENT AREA -->
+<div id="deck">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</div>
+<footer>
+    Stage Companion • Wake Lock Active
+</footer>
+<div id="wakeLockStatus">☀ Screen Awake</div>
+
+<script>
+    // --- 1. Font Size Logic ---
+    const slider = document.getElementById('sizeSlider');
+    const root = document.documentElement;
+
+    // Load saved size
+    const savedSize = localStorage.getItem('stage_font_size');
+    if (savedSize) {
+        root.style.setProperty('--base-size', savedSize + 'px');
+        slider.value = savedSize;
+    }
+
+    // Listen for changes
+    slider.addEventListener('input', (e) => {
+        const newSize = e.target.value;
+        root.style.setProperty('--base-size', newSize + 'px');
+        localStorage.setItem('stage_font_size', newSize);
+    });
+
+
+    // --- 2. Wake Lock ---
+    let wakeLock = null;
+    async function requestWakeLock() {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            document.getElementById('wakeLockStatus').classList.add('active');
+        } catch (err) { console.log('Wake Lock Error:', err); }
+    }
+    document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+            await requestWakeLock();
+        }
+    });
+    requestWakeLock();
+
+
+    // --- 3. Focus Mode ---
+    function focusCard(cardElement) {
+        if (document.body.classList.contains('editing')) return;
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('active-card'));
+        cardElement.classList.add('active-card');
+        cardElement.scrollIntoView({behavior: "smooth", block: "center"});
+    }
+
+
+    // --- 4. Timer ---
+    let timerInterval;
+    let seconds = 0;
+    let isRunning = false;
+    const timerDisplay = document.getElementById('timerDisplay');
+
+    function toggleTimer() {
+        if (isRunning) {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timerDisplay.style.color = '#999';
+        } else {
+            timerInterval = setInterval(updateTimer, 1000);
+            isRunning = true;
+            timerDisplay.style.color = '#00e5ff';
+        }
+    }
+
+    function updateTimer() {
+        seconds++;
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        timerDisplay.textContent = `${m}:${s}`;
+        
+        if (seconds > 600) timerDisplay.style.color = '#ffdd00';
+        if (seconds > 900) timerDisplay.style.color = '#ff5555';
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        seconds = 0;
+        timerDisplay.textContent = "00:00";
+        timerDisplay.style.color = '#999';
+    }
+
+
+    // --- 5. Progress Bar ---
+    window.onscroll = function() {
+        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        let scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+    };
+
+
+    // --- 6. Editor ---
+    const editBtn = document.getElementById('editBtn');
+    const contents = document.querySelectorAll('.editable-content');
+    let isEditing = false;
+
+    window.addEventListener('load', () => {
+        contents.forEach((div) => {
+            const id = div.getAttribute('data-id');
+            const saved = localStorage.getItem(`stage_notes_${id}`);
+            if (saved) div.innerHTML = saved;
+        });
+    });
+
+    function toggleEditMode() {
+        isEditing = !isEditing;
+        document.body.classList.toggle('editing');
+        
+        if (isEditing) {
+            editBtn.textContent = 'Save';
+            editBtn.classList.add('active');
+            contents.forEach(div => div.setAttribute('contenteditable', 'true'));
+        } else {
+            editBtn.textContent = 'Edit';
+            editBtn.classList.remove('active');
+            contents.forEach((div) => {
+                div.setAttribute('contenteditable', 'false');
+                const id = div.getAttribute('data-id');
+                localStorage.setItem(`stage_notes_${id}`, div.innerHTML);
+            });
+        }
+    }
+
+    function hardReset() {
+        if(confirm('Delete all saved notes and reset to template?')) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holographic Deck: AI Analysis</title>
+    
+    <!-- Reveal.js for Slide Logic -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/theme/black.min.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. THE THEATER (UI SHELL) --- */
+        /* GLOBAL THEME */
+.reveal {
+    background-color: #050505; /* Deep Void Black */
+    color: #e0e0e0;
+    font-family: 'Rajdhani', 'Segoe UI', sans-serif; /* Tech font */
+}
+
+/* NEON TEXT EFFECT */
+.neon-text {
+    color: #00f3ff;
+    text-shadow: 
+        0 0 5px #00f3ff,
+        0 0 10px #00f3ff,
+        0 0 20px #007acc;
+    font-weight: 700;
+}
+
+/* THE HOLO MODEL (spinning grid item) */
+.holo-model {
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    background: rgba(0, 243, 255, 0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 200px;
+    box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
+}
+.holo-model i {
+    font-size: 4em;
+    color: rgba(0, 243, 255, 0.8);
+    filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.8));
+}
+
+/* STAT BOXES (Cards) */
+.stat-box {
+    border: 1px solid #333;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    border-color: #fff;
+}
+
+/* BUTTONS */
+.deck-btn {
+    background: transparent;
+    border: 1px solid #00f3ff;
+    color: #00f3ff;
+    padding: 15px 40px;
+    font-family: inherit;
+    font-size: 1.2em;
+    letter-spacing: 3px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: all 0.3s;
+}
+
+.deck-btn:hover {
+    background: #00f3ff;
+    color: #000;
+    box-shadow: 0 0 20px #00f3ff;
+}
+
+/* FRAGMENT ANIMATIONS */
+.fragment.visible {
+    animation: fadeInHack 0.5s forwards;
+}
+
+@keyframes fadeInHack {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* The 3D Warp Background */
+        #warp-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* The "Slide Projector" Frame - Makes it look like a Screen, not a website */
+        .projector-frame {
+            position: relative;
+            width: 1280px;  /* Fixed Slide Ratio */
+            height: 720px;
+            z-index: 10;
+            border: 2px solid rgba(0, 140, 255, 0.3);
+            box-shadow: 0 0 50px rgba(0, 140, 255, 0.2), 
+                        inset 0 0 100px rgba(0,0,0,0.8);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent slide backing */
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+        }
+
+        /* Corner Decorations (Tech Look) */
+        .corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #00d2ff;
+            z-index: 20;
+            box-shadow: 0 0 10px #00d2ff;
+        }
+        .tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+        .bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+        .br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+        /* --- 2. CONTROL DECK (Bottom Bar) --- */
+        .control-deck {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 50px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 1px solid #00d2ff;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+        }
+        
+        .deck-info { color: #00d2ff; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+        .deck-btn {
+            background: transparent;
+            border: 1px solid rgba(0, 210, 255, 0.5);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .deck-btn:hover { background: #00d2ff; color: black; box-shadow: 0 0 15px #00d2ff; }
+
+        /* --- 3. SLIDE STYLING --- */
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: #fff;
+            text-shadow: 0 0 10px #00d2ff;
+            font-family: 'Orbitron', sans-serif; /* Tech font if avail, else fallback */
+            text-transform: uppercase;
+        }
+        .reveal h2 { border-bottom: 2px solid #00d2ff; display: inline-block; padding-bottom: 10px; }
+        
+        .neon-text { color: #00d2ff; text-shadow: 0 0 5px #00d2ff; }
+        .stat-box {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid #00d2ff;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            min-width: 200px;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+
+        /* 3D Model Placeholder Box */
+        .holo-model {
+            width: 100%;
+            height: 300px;
+            border: 1px dashed rgba(0, 255, 136, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ff88;
+            font-size: 3rem;
+            animation: float 4s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(0,255,136,0.1) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Highlight code */
+        code { color: #00ff88; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. The Warp Engine Background -->
+    <canvas id="warp-canvas"></canvas>
+
+    <!-- 2. The Presentation Frame (The "Screen") -->
+    <div class="projector-frame">
+        <!-- Decoration Corners -->
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- The Slides -->
+        <div class="reveal">
+            <div class="slides">
+                <!-- SLIDE 1: TITLE & INTRO -->
+                <section>
+                    <!-- Journal Badge Top Right -->
+                    <div style="position: absolute; top: 0; right: 0; border: 1px solid #333; padding: 5px 15px; border-radius: 4px; font-size: 0.4em; color: #888;">
+                        <i class="fa-solid fa-database"></i> EXPERT SYSTEMS W/ APPS | VOL 252
+                    </div>
+
+                    <!-- Main Title -->
+                    <div style="margin-top: 50px;">
+                        <h1 style="font-size: 2.5em; line-height: 1.1;">AI IN <span class="neon-text">EDUCATION</span></h1>
+                        <h3 style="font-size: 1em; letter-spacing: 4px; color: #00f3ff; margin-bottom: 40px; text-transform: uppercase;">
+                            Systematic Literature Review
+                        </h3>
+                    </div>
+
+                    <!-- Human/Network Graphic Sim (Icon based) -->
+                    <div style="margin: 30px 0;">
+                        <i class="fa-solid fa-circle-nodes" style="font-size: 3em; color: #333;"></i>
+                        <i class="fa-solid fa-link" style="margin: 0 15px; color: #00f3ff;"></i>
+                        <i class="fa-solid fa-user" style="font-size: 3em; color: #e0e0e0;"></i>
+                    </div>
+
+                    <!-- Authors & Presenter Data Block -->
+                    <div style="font-size: 0.6em; color: #aaa; border-top: 1px solid #333; padding-top: 20px; display: inline-block; text-align: left;">
+                        <p style="margin: 5px 0;"><strong style="color: #fff;">AUTHORS:</strong> Wang, Wang, Zhu, Wang, Tran, Du</p>
+                        <p style="margin: 5px 0;"><strong style="color: #fff;">YEAR:</strong> 2024</p>
+                        <div style="margin-top: 15px; border: 1px solid #00f3ff; color: #00f3ff; padding: 5px 10px; display: inline-block; border-radius: 4px;">
+                            <i class="fa-solid fa-microphone-lines"></i> PRESENTER: [Your Name]
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 2: THE MARKET CONTEXT -->
+                <section>
+                    <h2>The Market <span class="neon-text">Velocity</span></h2>
+                    
+                    <div style="display: flex; gap: 40px; align-items: center; justify-content: space-between; margin-top: 40px;">
+                        
+                        <!-- Left: Market Data Visuals -->
+                        <div style="width: 50%;">
+                            <!-- Simulated Chart using Progress Bars -->
+                            <div class="stat-box fragment" style="margin-bottom: 20px; text-align: left;">
+                                <h1 style="color: #00ff88; margin: 0; text-shadow: 0 0 10px #00ff88;">36% CAGR</h1>
+                                <p style="font-size: 0.5em; margin: 0; opacity: 0.8;">Projected Growth (2022-2030)</p>
+                                <!-- Visual Bar -->
+                                <div style="width: 100%; height: 4px; background: #333; margin-top: 10px; border-radius: 2px;">
+                                    <div style="width: 85%; height: 100%; background: #00ff88; box-shadow: 0 0 10px #00ff88;"></div>
+                                </div>
+                            </div>
+
+                            <ul style="list-style: none; padding: 0; font-size: 0.7em; text-align: left;">
+                                <li class="fragment" style="margin-bottom: 10px;">
+                                    <i class="fa-solid fa-sack-dollar neon-text"></i> 
+                                    <strong>$1.82 Billion</strong> (2021 Global Market)
+                                </li>
+                                <li class="fragment">
+                                    <i class="fa-solid fa-users neon-text"></i> 
+                                    <strong>43% Adoption</strong> (US College Students)
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Right: Definition Box -->
+                        <div style="width: 45%; border-left: 2px solid #333; padding-left: 30px;">
+                            <div class="fragment">
+                                <h4 style="color: #00f3ff; margin-bottom: 5px;">WEAK AI</h4>
+                                <p style="font-size: 0.6em; margin-top: 0;">(The Standard)</p>
+                                <p style="font-size: 0.6em; border: 1px dashed #555; padding: 10px; border-radius: 5px;">
+                                    Algorithms for specific tasks (grading, prediction). Lacks consciousness.
+                                </p>
+                            </div>
+                            <div class="fragment" style="opacity: 0.5; margin-top: 20px;">
+                                <h4 style="color: #ff4444; margin-bottom: 5px;">STRONG AI</h4>
+                                <p style="font-size: 0.6em; margin-top: 0;">(AGI / Offline)</p>
+                                <p style="font-size: 0.6em;">
+                                    Full human capability. Not yet present in AIED.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 3: GAP & RESEARCH QUESTIONS -->
+                <section>
+                    <h2>The <span style="color: #ff4444;">Research Gap</span></h2>
+                    
+                    <!-- Central Gap Warning -->
+                    <div class="fragment" style="margin: 20px auto; background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; padding: 15px; border-radius: 8px; max-width: 80%;">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #ff4444;"></i>
+                        <strong style="color: #ff4444; margin-left: 10px;">CRITICAL DATA MISSING</strong>
+                        <p style="font-size: 0.6em; margin: 5px 0 0 0;">Existing reviews are Pre-2019. The "COVID-19 Digital Acceleration" is unmapped.</p>
+                    </div>
+
+                    <!-- The 3 Questions Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px;">
+                        
+                        <div class="stat-box fragment">
+                            <i class="fa-solid fa-cubes neon-text" style="font-size: 1.5em; margin-bottom: 15px;"></i>
+                            <h5 style="margin: 0; color: #fff;">Q1: APPS</h5>
+                            <p style="font-size: 0.5em; color: #aaa;">What are we building?</p>
+                        </div>
+
+                        <div class="stat-box fragment">
+                            <i class="fa-solid fa-magnifying-glass-chart neon-text" style="font-size: 1.5em; margin-bottom: 15px;"></i>
+                            <h5 style="margin: 0; color: #fff;">Q2: TOPICS</h5>
+                            <p style="font-size: 0.5em; color: #aaa;">What are we studying?</p>
+                        </div>
+
+                        <div class="stat-box fragment">
+                            <i class="fa-solid fa-compass-drafting neon-text" style="font-size: 1.5em; margin-bottom: 15px;"></i>
+                            <h5 style="margin: 0; color: #fff;">Q3: DESIGN</h5>
+                            <p style="font-size: 0.5em; color: #aaa;">Theories & Methods?</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- SLIDE 4: METHODOLOGY FUNNEL -->
+                <section>
+                    <h2>Methodology <span class="neon-text">Protocols</span></h2>
+                    <p style="font-size: 0.6em;">Mixed-Method Approach: Bibliometrix + Content Analysis</p>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 30px;">
+                        
+                        <!-- Phase 1: Wide -->
+                        <div class="stat-box fragment" style="width: 80%; display: flex; justify-content: space-between; align-items: center; border-color: #00f3ff; box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);">
+                            <div style="text-align: left;">
+                                <h5 style="margin: 0; color: #00f3ff;"><i class="fa-solid fa-globe"></i> PHASE 1: MACRO</h5>
+                                <span style="font-size: 0.5em;">Web of Science (1984 - 2022)</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <h2 style="margin: 0; line-height: 1;">2,223</h2>
+                                <span style="font-size: 0.5em;">ARTICLES</span>
+                            </div>
+                        </div>
+
+                        <!-- Funnel Icon -->
+                        <div class="fragment">
+                            <i class="fa-solid fa-filter" style="color: #555; font-size: 1.5em;"></i>
+                        </div>
+
+                        <!-- Phase 2: Narrow -->
+                        <div class="stat-box fragment" style="width: 50%; display: flex; justify-content: space-between; align-items: center; border-color: #ff0055; background: rgba(255, 0, 85, 0.05);">
+                            <div style="text-align: left;">
+                                <h5 style="margin: 0; color: #ff0055;"><i class="fa-solid fa-microscope"></i> PHASE 2: MICRO</h5>
+                                <span style="font-size: 0.5em;">Q1 Empirical Papers</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <h2 style="margin: 0; line-height: 1; color: #ff0055;">125</h2>
+                                <span style="font-size: 0.5em;">PAPERS</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <!-- SLIDE 5: THE EXPLOSION (TIMELINE) -->
+                <section>
+                    <h2>Timeline of <span class="neon-text">Growth</span></h2>
+                    <div style="display: flex; gap: 40px; height: 400px; margin-top: 30px;">
+                        
+                        <!-- Left: Text Data -->
+                        <div style="width: 40%; display: flex; flex-direction: column; justify-content: center; gap: 20px;">
+                            <div class="fragment" data-index="1">
+                                <span style="color: #666; font-size: 0.8em;">1984 – 2016</span>
+                                <h5 style="margin: 0; color: #aaa;">INCUBATION</h5>
+                                <p style="font-size: 0.5em; margin: 0;">&lt; 50 papers/year (Dormant)</p>
+                            </div>
+                            <div class="fragment" data-index="2">
+                                <span style="color: #00f3ff; font-size: 0.8em;">2017</span>
+                                <h5 style="margin: 0; color: #fff;">TURNING POINT</h5>
+                                <p style="font-size: 0.5em; margin: 0;">Deep Learning Maturity</p>
+                            </div>
+                            <div class="fragment" data-index="3">
+                                <span style="color: #ff0055; font-size: 0.8em;">2019 – 2022</span>
+                                <h5 style="margin: 0; color: #ff0055;">THE SURGE</h5>
+                                <p style="font-size: 0.5em; margin: 0;">COVID-19 Digital Force</p>
+                            </div>
+                        </div>
+
+                        <!-- Right: Simulated Holographic Graph (J-Curve) -->
+                        <div style="width: 60%; border-left: 2px solid #333; border-bottom: 2px solid #333; position: relative; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 0;">
+                            
+                            <!-- Grid Lines Background -->
+                            <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(0deg, transparent 95%, rgba(50,50,50,0.5) 96%); background-size: 100% 20%; pointer-events: none;"></div>
+
+                            <!-- Bars -->
+                            <div class="fragment fade-up" data-index="1" style="width: 20%; height: 5%; background: #444; margin-bottom: 2px;"></div>
+                            <div class="fragment fade-up" data-index="1" style="width: 20%; height: 8%; background: #444; margin-bottom: 2px;"></div>
+                            <div class="fragment fade-up" data-index="2" style="width: 20%; height: 25%; background: linear-gradient(to top, #00f3ff, transparent); margin-bottom: 2px; box-shadow: 0 0 15px #00f3ff;"></div>
+                            <div class="fragment fade-up" data-index="3" style="width: 20%; height: 95%; background: linear-gradient(to top, #ff0055, #ff4444); margin-bottom: 2px; box-shadow: 0 0 20px #ff0055;">
+                                <span style="position: absolute; top: 20px; right: 20px; font-size: 0.6em; color: #fff; transform: rotate(-90deg);">EXPONENTIAL</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 6: DISCIPLINARY SILOS -->
+                <section>
+                    <h2>Disciplinary <span class="neon-text">Foundations</span></h2>
+                    <p style="font-size: 0.6em; color: #aaa;">Analysis of Top Journals</p>
+
+                    <!-- The 3 Silos -->
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
+                        
+                        <!-- CS -->
+                        <div class="stat-box fragment" style="width: 30%; border-color: #ffd700;">
+                            <i class="fa-solid fa-laptop-code" style="color: #ffd700; font-size: 2em; margin-bottom: 15px;"></i>
+                            <h5 style="margin: 0; color: #ffd700;">Comp Sci</h5>
+                            <p style="font-size: 0.4em; color: #ddd; margin-top: 10px;">
+                                IEEE Access<br>J. Intelligent Systems
+                            </p>
+                            <div style="font-size: 0.4em; background: rgba(255, 215, 0, 0.1); padding: 5px;">TECH FOCUS</div>
+                        </div>
+
+                        <!-- EDU -->
+                        <div class="stat-box fragment" style="width: 30%; border-color: #00f3ff;">
+                            <i class="fa-solid fa-graduation-cap" style="color: #00f3ff; font-size: 2em; margin-bottom: 15px;"></i>
+                            <h5 style="margin: 0; color: #00f3ff;">Education</h5>
+                            <p style="font-size: 0.4em; color: #ddd; margin-top: 10px;">
+                                Computers & Edu<br>Emerging Tech
+                            </p>
+                            <div style="font-size: 0.4em; background: rgba(0, 243, 255, 0.1); padding: 5px;">PEDAGOGY FOCUS</div>
+                        </div>
+
+                        <!-- MIS -->
+                        <div class="stat-box fragment" style="width: 30%; border-color: #be29ec;">
+                            <i class="fa-solid fa-users-viewfinder" style="color: #be29ec; font-size: 2em; margin-bottom: 15px;"></i>
+                            <h5 style="margin: 0; color: #be29ec;">MIS</h5>
+                            <p style="font-size: 0.4em; color: #ddd; margin-top: 10px;">
+                                Computers in<br>Human Behavior
+                            </p>
+                            <div style="font-size: 0.4em; background: rgba(190, 41, 236, 0.1); padding: 5px;">BEHAVIOR FOCUS</div>
+                        </div>
+                    </div>
+
+                    <!-- The Insight Alert -->
+                    <div class="fragment" style="margin-top: 30px; border: 1px dashed #fff; padding: 10px; border-radius: 5px; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #ff4444;"></i>
+                        <div style="text-align: left;">
+                            <strong style="font-size: 0.7em;">THE SILO EFFECT</strong>
+                            <p style="font-size: 0.5em; margin: 0;">Open Access drives volume, but established journals drive impact. The gap between Algorithms (CS) and Pedagogy (Edu) remains wide.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 7: BROAD THEMES (DATABASE TAGS) -->
+                <section>
+                    <h2>Cluster Analysis <span style="font-size: 0.5em; color: #888;">// DATABASE TAGS</span></h2>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                        
+                        <!-- Cluster 1: Green -->
+                        <div class="stat-box fragment" style="border-left: 5px solid #00ff88; text-align: left; padding-left: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="margin: 0; color: #00ff88;">User Behaviors</h4>
+                                <i class="fa-solid fa-users" style="color: #00ff88; opacity: 0.5;"></i>
+                            </div>
+                            <p style="font-size: 0.5em; margin-top: 5px;">Adoption, Acceptance, Trust</p>
+                        </div>
+
+                        <!-- Cluster 2: Purple -->
+                        <div class="stat-box fragment" style="border-left: 5px solid #be29ec; text-align: left; padding-left: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="margin: 0; color: #be29ec;">Design Science</h4>
+                                <i class="fa-solid fa-pen-ruler" style="color: #be29ec; opacity: 0.5;"></i>
+                            </div>
+                            <p style="font-size: 0.5em; margin-top: 5px;">Implementation, Tutoring Systems</p>
+                        </div>
+
+                        <!-- Cluster 3: Blue -->
+                        <div class="stat-box fragment" style="border-left: 5px solid #00f3ff; text-align: left; padding-left: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="margin: 0; color: #00f3ff;">Big Data</h4>
+                                <i class="fa-solid fa-database" style="color: #00f3ff; opacity: 0.5;"></i>
+                            </div>
+                            <p style="font-size: 0.5em; margin-top: 5px;">Algorithms, Prediction Models</p>
+                        </div>
+
+                        <!-- Cluster 4: Red -->
+                        <div class="stat-box fragment" style="border-left: 5px solid #ff4444; text-align: left; padding-left: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="margin: 0; color: #ff4444;">AI Impacts</h4>
+                                <i class="fa-solid fa-bullseye" style="color: #ff4444; opacity: 0.5;"></i>
+                            </div>
+                            <p style="font-size: 0.5em; margin-top: 5px;">Learning Outcomes, 21st Century Skills</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 8: SPECIFIC THEMES (AUTHOR KEYWORDS) -->
+                <section>
+                    <h2>Specific Themes <span style="font-size: 0.5em; color: #888;">// AUTHOR KEYWORDS</span></h2>
+                    
+                    <div style="display: flex; gap: 40px; margin-top: 40px; align-items: center;">
+                        
+                        <!-- Left: The 5 List Items -->
+                        <div style="width: 55%; text-align: left;">
+                            <ul style="list-style: none; padding: 0; font-size: 0.7em; line-height: 1.8;">
+                                <li class="fragment"><i class="fa-solid fa-brain neon-text" style="width: 30px;"></i> <strong>Machine Learning</strong> <span style="font-size:0.7em; color:#666;">(Deep Learning, NLP)</span></li>
+                                <li class="fragment"><i class="fa-solid fa-chalkboard-user neon-text" style="width: 30px;"></i> <strong>Ed Technology</strong> <span style="font-size:0.7em; color:#666;">(Agents, Support)</span></li>
+                                <li class="fragment"><i class="fa-solid fa-network-wired neon-text" style="width: 30px;"></i> <strong>Learning Systems</strong> <span style="font-size:0.7em; color:#666;">(ITS, MOOCs)</span></li>
+                                <li class="fragment"><i class="fa-solid fa-vr-cardboard neon-text" style="width: 30px;"></i> <strong>Emerging Tech</strong> <span style="font-size:0.7em; color:#666;">(VR/AR, IoT, Cloud)</span></li>
+                                <li class="fragment"><i class="fa-solid fa-robot neon-text" style="width: 30px;"></i> <strong>AI Education</strong> <span style="font-size:0.7em; color:#666;">(Robotics, STEM)</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Right: Comparison Insight -->
+                        <div style="width: 40%;">
+                            <div class="stat-box fragment" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #aaa;">
+                                <i class="fa-solid fa-magnifying-glass" style="font-size: 2em; margin-bottom: 20px; color: #fff;"></i>
+                                <h5 style="margin: 0;">OBSERVATION</h5>
+                                <hr style="border: 0; border-top: 1px solid #555; margin: 15px 0;">
+                                <p style="font-size: 0.6em;">
+                                    Author keywords are significantly more <strong>technical</strong>.
+                                    <br><br>
+                                    <span style="color: #ff4444;">"User Behavior"</span> disappears as a primary category, replaced by specific system architectures.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <!-- SLIDE 9: CATEGORIES DISTRIBUTION (DASHBOARD) -->
+                <section>
+                    <h2>System <span class="neon-text">Architecture</span></h2>
+                    <p style="font-size: 0.6em;">Distribution of Empirical Research (N=125)</p>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; margin-top: 30px; height: 450px;">
+                        
+                        <!-- Category 1: The Giant (40%) -->
+                        <div class="stat-box fragment" style="grid-row: span 2; display: flex; flex-direction: column; justify-content: center; border-color: #00f3ff; background: rgba(0, 243, 255, 0.05);">
+                            <i class="fa-solid fa-graduation-cap" style="font-size: 3em; color: #00f3ff; margin-bottom: 20px;"></i>
+                            <h1 style="margin: 0; color: #fff;">40%</h1>
+                            <h4 style="color: #00f3ff; margin: 10px 0;">Adaptive Learning</h4>
+                            <p style="font-size: 0.5em;">Personalized Tutoring</p>
+                        </div>
+
+                        <!-- Category 2: Assessment (24.8%) -->
+                        <div class="stat-box fragment" style="border-color: #00ff88;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h2 style="margin: 0; color: #00ff88;">24.8%</h2>
+                                <i class="fa-solid fa-clipboard-check" style="font-size: 1.5em; color: #00ff88;"></i>
+                            </div>
+                            <h5 style="text-align: left; margin: 5px 0 0 0;">Intelligent Assessment</h5>
+                            <p style="text-align: left; font-size: 0.4em; margin: 0;">Efficiency & Grading</p>
+                        </div>
+
+                        <!-- Bottom Row Split for Cat 3 & 4 -->
+                        <div style="display: flex; gap: 20px;">
+                            <!-- Category 3: Profiling (20%) -->
+                            <div class="stat-box fragment" style="width: 50%; border-color: #ff0055;">
+                                <h3 style="margin: 0; color: #ff0055;">20%</h3>
+                                <h6 style="margin: 5px 0;">Profiling</h6>
+                                <p style="font-size: 0.35em;">Prediction / Data Mining</p>
+                            </div>
+
+                            <!-- Category 4: Emerging (15.2%) -->
+                            <div class="stat-box fragment" style="width: 50%; border-color: #ffd700;">
+                                <h3 style="margin: 0; color: #ffd700;">15.2%</h3>
+                                <h6 style="margin: 5px 0;">Emerging</h6>
+                                <p style="font-size: 0.35em;">Robots / VR</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 10: ADAPTIVE LEARNING (DEEP DIVE) -->
+                <section>
+                    <h2>01. Adaptive <span class="neon-text">Learning</span></h2>
+                    <div style="display: flex; gap: 40px; margin-top: 40px;">
+
+                        <!-- Left: ITS -->
+                        <div class="stat-box fragment" style="width: 50%; text-align: left;">
+                            <div style="border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px;">
+                                <i class="fa-solid fa-chalkboard-user neon-text" style="font-size: 2em;"></i>
+                                <h4 style="display: inline-block; margin: 0 0 0 15px;">ITS</h4>
+                                <p style="font-size: 0.5em; margin: 0; color: #888;">Intelligent Tutoring Systems</p>
+                            </div>
+                            <p style="font-size: 0.6em;"><strong>GOAL:</strong> Simulate human tutor.</p>
+                            <p style="font-size: 0.6em;"><strong>MECHANISM:</strong> Diagnosis <i class="fa-solid fa-arrow-right" style="font-size: 0.8em; color: #00f3ff;"></i> Scaffolding.</p>
+                            <div style="font-size: 0.5em; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 4px; margin-top: 10px;">
+                                <i class="fa-solid fa-quote-left"></i> <em>Detects "Why" a mistake was made, not just "That" it was made.</em>
+                            </div>
+                        </div>
+
+                        <!-- Right: Hypermedia -->
+                        <div class="stat-box fragment" style="width: 50%; text-align: left;">
+                            <div style="border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px;">
+                                <i class="fa-solid fa-sitemap" style="font-size: 2em; color: #ffd700;"></i>
+                                <h4 style="display: inline-block; margin: 0 0 0 15px; color: #ffd700;">Hypermedia</h4>
+                                <p style="font-size: 0.5em; margin: 0; color: #888;">Adaptive Environments</p>
+                            </div>
+                            <p style="font-size: 0.6em;"><strong>GOAL:</strong> Tailor the environment.</p>
+                            <p style="font-size: 0.6em;"><strong>MECHANISM:</strong> Adapts content/paths based on Learning Styles.</p>
+                            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                <span style="font-size: 0.5em; border: 1px solid #555; padding: 5px;">Visual</span>
+                                <span style="font-size: 0.5em; border: 1px solid #555; padding: 5px;">Verbal</span>
+                                <span style="font-size: 0.5em; border: 1px solid #555; padding: 5px;">Kinesthetic</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- SLIDE 11: ASSESSMENT & MANAGEMENT -->
+                <section>
+                    <h2>02. Assessment & <span style="color: #00ff88;">Management</span></h2>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px;">
+                        
+                        <!-- Assessment Side -->
+                        <div style="text-align: left;">
+                            <div class="fragment">
+                                <i class="fa-solid fa-file-signature" style="font-size: 3em; color: #00ff88; margin-bottom: 20px;"></i>
+                                <h4 style="color: #fff;">Intelligent Assessment (IAS)</h4>
+                                <ul style="font-size: 0.6em; color: #ccc; line-height: 1.6;">
+                                    <li>Automated Essay Scoring</li>
+                                    <li>Code Grading & Oral Pronunciation</li>
+                                    <li><strong style="color: #00ff88;">IMPACT:</strong> Instant feedback + Time saving.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Management Side -->
+                        <div style="text-align: left; border-left: 1px solid #333; padding-left: 40px;">
+                            <div class="fragment">
+                                <i class="fa-solid fa-server" style="font-size: 3em; color: #888; margin-bottom: 20px;"></i>
+                                <h4 style="color: #fff;">Smart LMS</h4>
+                                <ul style="font-size: 0.6em; color: #ccc; line-height: 1.6;">
+                                    <li>From Repository <i class="fa-solid fa-arrow-right"></i> Platform.</li>
+                                    <li>Automated Grouping (Collaboration).</li>
+                                    <li>Real-time Attention Monitoring.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- SLIDE 12: PROFILING & PREDICTION -->
+                <section>
+                    <h2>03. Profiling & <span style="color: #ff0055;">Prediction</span></h2>
+                    <div style="display: flex; justify-content: center; margin-top: 40px;">
+                        
+                        <div class="stat-box fragment" style="border-color: #ff0055; box-shadow: 0 0 20px rgba(255, 0, 85, 0.2); max-width: 700px;">
+                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                                <i class="fa-solid fa-bell" style="font-size: 3em; color: #ff0055; animation: pulse 2s infinite;"></i>
+                                <div style="text-align: left;">
+                                    <h3 style="margin: 0; color: #ff0055;">EARLY WARNING SYSTEMS</h3>
+                                    <p style="font-size: 0.6em; margin: 0;">Preventing academic failure before it happens.</p>
+                                </div>
+                            </div>
+                            
+                            <hr style="border: 0; border-top: 1px dashed #555;">
+
+                            <div style="text-align: left; margin-top: 20px;">
+                                <h5 style="color: #fff; margin-bottom: 10px;">LEARNER MODELING</h5>
+                                <p style="font-size: 0.6em; margin-bottom: 10px;">Using "Big Data" (Log files, Clicks, Time-on-task) to profile behavior.</p>
+                                <div style="display: flex; gap: 10px;">
+                                    <span style="font-size: 0.4em; border: 1px solid #333; padding: 5px; background: #222;">SVM</span>
+                                    <span style="font-size: 0.4em; border: 1px solid #333; padding: 5px; background: #222;">Neural Networks</span>
+                                    <span style="font-size: 0.4em; border: 1px solid #333; padding: 5px; background: #222;">Decision Trees</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 13: EMERGING TECH -->
+                <section>
+                    <h2>04. Emerging <span style="color: #ffd700;">Tech</span></h2>
+                    
+                    <div style="display: flex; gap: 30px; margin-top: 40px;">
+                        
+                        <!-- Robots -->
+                        <div class="stat-box fragment" style="width: 50%; background: linear-gradient(180deg, rgba(255,215,0,0.05), transparent);">
+                            <i class="fa-solid fa-robot" style="font-size: 4em; color: #ffd700; margin-bottom: 20px;"></i>
+                            <h4 style="margin: 0; color: #ffd700;">Robots & Chatbots</h4>
+                            <p style="font-size: 0.6em; padding: 0 20px;">
+                                Language partners (judgment-free) and social companions for emotional connection.
+                            </p>
+                        </div>
+
+                        <!-- VR/AR -->
+                        <div class="stat-box fragment" style="width: 50%; background: linear-gradient(180deg, rgba(100,100,255,0.05), transparent);">
+                            <i class="fa-solid fa-vr-cardboard" style="font-size: 4em; color: #8888ff; margin-bottom: 20px;"></i>
+                            <h4 style="margin: 0; color: #8888ff;">VR / AR</h4>
+                            <p style="font-size: 0.6em; padding: 0 20px;">
+                                Immersive simulations (Medical, Safety). High engagement but high technical barriers.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+                <!-- SLIDE 14: RESEARCH TOPICS (TECH BIAS) -->
+<section>
+    <h2>Topic <span class="neon-text">Bias</span></h2>
+    <p style="font-size: 0.6em;">Distribution of Research Focus</p>
+
+    <div style="display: flex; gap: 40px; margin-top: 30px; align-items: flex-end;">
+        
+        <!-- The Majority: System Design -->
+        <div class="fragment" style="width: 40%; text-align: center;">
+            <div style="height: 300px; width: 100%; background: linear-gradient(to top, #00f3ff, transparent); border: 1px solid #00f3ff; position: relative;">
+                <span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #fff; font-size: 1.5em;">52.8%</span>
+                <i class="fa-solid fa-microchip" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 3em; color: #000;"></i>
+            </div>
+            <h5 style="margin: 10px 0 0 0; color: #00f3ff;">SYSTEM DESIGN</h5>
+            <p style="font-size: 0.5em; color: #aaa;">"Can we build it?"</p>
+        </div>
+
+        <!-- The Middle: Impacts -->
+        <div class="fragment" style="width: 30%; text-align: center;">
+            <div style="height: 220px; width: 100%; background: linear-gradient(to top, #00ff88, transparent); border: 1px solid #00ff88; position: relative;">
+                <span style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #fff; font-size: 1.2em;">39.2%</span>
+                <i class="fa-solid fa-chart-line" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 2em; color: #000;"></i>
+            </div>
+            <h5 style="margin: 10px 0 0 0; color: #00ff88;">IMPACTS</h5>
+            <p style="font-size: 0.5em; color: #aaa;">"Does it work?"</p>
+        </div>
+
+        <!-- The Minority: Ethics (Alert Style) -->
+        <div class="fragment" style="width: 20%; text-align: center;">
+            <div style="height: 50px; width: 100%; background: linear-gradient(to top, #ff4444, transparent); border: 1px solid #ff4444; position: relative; display: flex; align-items: center; justify-content: center;">
+                <span style="font-weight: bold; color: #fff; font-size: 1em;">2.4%</span>
+            </div>
+            <h5 style="margin: 10px 0 0 0; color: #ff4444;">ETHICS</h5>
+            <p style="font-size: 0.5em; color: #aaa;">"Should we?"</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 15: METHODOLOGY (QUANTITATIVE DOMINANCE) -->
+<section>
+    <h2>Methodology <span class="neon-text">Scan</span></h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px;">
+        
+        <!-- Quantitative Side -->
+        <div style="text-align: right; border-right: 2px solid #333; padding-right: 30px;">
+            <h4 style="color: #00f3ff; margin-bottom: 20px;">QUANTITATIVE</h4>
+            
+            <div class="stat-box fragment" style="margin-bottom: 15px; border-color: #00f3ff; text-align: right;">
+                <i class="fa-solid fa-flask" style="color: #00f3ff; margin-right: 10px;"></i>
+                <strong>37.6%</strong> Experiments
+            </div>
+
+            <div class="stat-box fragment" style="margin-bottom: 15px; border-color: #00f3ff; text-align: right;">
+                <i class="fa-solid fa-table" style="color: #00f3ff; margin-right: 10px;"></i>
+                <strong>22.4%</strong> Statistical Analysis
+            </div>
+        </div>
+
+        <!-- Qualitative Side -->
+        <div style="text-align: left;">
+            <h4 style="color: #ffd700; margin-bottom: 20px;">QUALITATIVE</h4>
+            
+            <div class="stat-box fragment" style="margin-bottom: 15px; border-color: #ffd700; opacity: 0.7;">
+                <strong>9.6%</strong> Case Studies / Interviews
+            </div>
+
+            <div class="stat-box fragment" style="margin-bottom: 15px; border-color: #ffd700; opacity: 0.7;">
+                <strong>8.0%</strong> Mixed Methods
+            </div>
+
+            <div class="fragment" style="margin-top: 20px; font-size: 0.6em; color: #ff4444; border: 1px dashed #ff4444; padding: 10px; display: inline-block;">
+                <i class="fa-solid fa-triangle-exclamation"></i> GAP: Lack of "Why" & User Experience
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 16: THEORETICAL DEFICIT -->
+<section>
+    <h2>The <span style="color: #ff4444;">Theoretical Deficit</span></h2>
+    
+    <!-- Big Warning Box -->
+    <div class="fragment" style="margin: 40px auto; width: 80%; border: 2px solid #ff4444; background: rgba(255, 68, 68, 0.1); padding: 30px; position: relative;">
+        <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #050505; padding: 0 20px; color: #ff4444; font-weight: bold; border: 1px solid #ff4444;">
+            <i class="fa-solid fa-triangle-exclamation"></i> MISSING DATA
+        </div>
+        
+        <h1 style="color: #ff4444; font-size: 4em; margin: 0; line-height: 1;">55.2%</h1>
+        <h3 style="margin: 10px 0 0 0; color: #fff;">NO GUIDING THEORY</h3>
+        <p style="font-size: 0.6em; color: #ddd;">Technology-Led rather than Pedagogy-Led.</p>
+    </div>
+
+    <!-- The Minority that Used Theory -->
+    <div class="fragment" style="display: flex; justify-content: center; gap: 20px; font-size: 0.6em; color: #aaa; margin-top: 30px;">
+        <span><i class="fa-solid fa-check" style="color: #00ff88;"></i> Constructivism</span>
+        <span><i class="fa-solid fa-check" style="color: #00ff88;"></i> Learning Styles</span>
+        <span><i class="fa-solid fa-check" style="color: #00ff88;"></i> Cognitive Load</span>
+    </div>
+
+</section>
+
+<!-- SLIDE 17: CONTEXT (TARGET AUDIENCE) -->
+<section>
+    <h2>Subject <span class="neon-text">Demographics</span></h2>
+    <p style="font-size: 0.6em;">Who are we studying?</p>
+    
+    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin-top: 40px; height: 350px;">
+        
+        <!-- Higher Ed -->
+        <div class="stat-box fragment" style="width: 35%; height: 90%; background: rgba(0, 243, 255, 0.1); border-color: #00f3ff; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="margin-top: 20px;">
+                <i class="fa-solid fa-building-columns" style="font-size: 3em; color: #00f3ff;"></i>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #fff;">45.6%</h2>
+                <span style="font-size: 0.5em;">HIGHER ED</span>
+                <p style="font-size: 0.4em; color: #888;">(Easy Recruitment)</p>
+            </div>
+        </div>
+
+        <!-- K-12 -->
+        <div class="stat-box fragment" style="width: 25%; height: 60%; background: rgba(0, 255, 136, 0.1); border-color: #00ff88; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="margin-top: 20px;">
+                <i class="fa-solid fa-school" style="font-size: 2em; color: #00ff88;"></i>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #fff;">32%</h3>
+                <span style="font-size: 0.5em;">K-12</span>
+            </div>
+        </div>
+
+        <!-- Preschool -->
+        <div class="stat-box fragment" style="width: 15%; height: 15%; background: rgba(255, 68, 68, 0.1); border-color: #ff4444; display: flex; flex-direction: column; justify-content: center;">
+            <h4 style="margin: 0; color: #ff4444;">3.2%</h4>
+            <span style="font-size: 0.4em;">PRE-K</span>
+        </div>
+
+    </div>
+</section>
+<!-- SLIDE 18: FUTURE ROADMAP (GEN AI) -->
+<section>
+    <h2>Future <span class="neon-text">Frontiers</span></h2>
+    <p style="font-size: 0.6em;">Phase 1: Generative AI & Collaboration</p>
+
+    <div style="display: flex; gap: 40px; margin-top: 40px;">
+        
+        <!-- Left: GenAI -->
+        <div class="stat-box fragment" style="width: 50%; border-color: #be29ec; box-shadow: 0 0 15px rgba(190, 41, 236, 0.1);">
+            <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 3em; color: #be29ec; margin-bottom: 20px;"></i>
+            <h4 style="margin: 0; color: #fff;">GENERATIVE AI</h4>
+            <hr style="border: 0; border-top: 1px solid #be29ec; opacity: 0.5; margin: 15px 0;">
+            <p style="font-size: 0.5em; text-align: left;">
+                <strong style="color: #be29ec;">NOW:</strong> "Weak AI" (Grading/Classification)<br>
+                <strong style="color: #fff;">NEXT:</strong> "Co-Pilot" (Content Creation)
+            </p>
+        </div>
+
+        <!-- Right: Human in the Loop -->
+        <div class="stat-box fragment" style="width: 50%; border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);">
+            <i class="fa-solid fa-handshake" style="font-size: 3em; color: #00f3ff; margin-bottom: 20px;"></i>
+            <h4 style="margin: 0; color: #fff;">AUGMENTATION</h4>
+            <hr style="border: 0; border-top: 1px solid #00f3ff; opacity: 0.5; margin: 15px 0;">
+            <p style="font-size: 0.5em; text-align: left;">
+                <strong style="color: #00f3ff;">SHIFT:</strong> From Automation <i class="fa-solid fa-arrow-right"></i> Augmentation<br>
+                <strong style="color: #fff;">FOCUS:</strong> Learner Agency & Human Control
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 19: HUMAN FRONTIERS (ETHICS & EMOTION) -->
+<section>
+    <h2>The <span style="color: #ff4444;">Human</span> Factor</h2>
+    <p style="font-size: 0.6em;">Phase 2: Ethics & Emotion</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+        
+        <!-- Affective Computing -->
+        <div class="stat-box fragment" style="text-align: left;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <i class="fa-solid fa-heart-pulse" style="font-size: 2em; color: #ff0055;"></i>
+                <h4 style="margin: 0; color: #ff0055;">AFFECTIVE COMPUTING</h4>
+            </div>
+            <p style="font-size: 0.5em;"><strong>PROBLEM:</strong> AIED is currently "Emotionally Cold."</p>
+            <p style="font-size: 0.5em;"><strong>SOLUTION:</strong> Flow Theory integration. Recognizing frustration vs. boredom to support well-being.</p>
+        </div>
+
+        <!-- Ethics -->
+        <div class="stat-box fragment" style="text-align: left;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <i class="fa-solid fa-shield-halved" style="font-size: 2em; color: #ffd700;"></i>
+                <h4 style="margin: 0; color: #ffd700;">RESPONSIBILITY</h4>
+            </div>
+            <p style="font-size: 0.5em;"><strong>URGENT:</strong> Algorithmic Bias & Data Surveillance.</p>
+            <p style="font-size: 0.5em;"><strong>GOAL:</strong> "Ethics by Design" — Fairness as a core metric, not an afterthought.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- SLIDE 20: INTERDISCIPLINARY RIGOR (THE BRIDGE) -->
+<section>
+    <h2>Bridging The <span class="neon-text">Silos</span></h2>
+    
+    <!-- The Bridge Graphic -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin: 40px 0;">
+        
+        <div class="fragment" style="text-align: center; width: 30%;">
+            <i class="fa-solid fa-code" style="font-size: 3em; color: #fff; border: 1px solid #555; padding: 20px; border-radius: 50%;"></i>
+            <h5 style="margin-top: 15px; color: #aaa;">COMPUTER SCIENCE</h5>
+        </div>
+
+        <div class="fragment" style="text-align: center; flex-grow: 1; border-top: 2px dashed #00f3ff; position: relative;">
+            <span style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%); font-size: 0.5em; background: #050505; padding: 5px; border: 1px solid #00f3ff; color: #00f3ff;">
+                CO-AUTHORED RESEARCH
+            </span>
+            <i class="fa-solid fa-link" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 1.5em; color: #00f3ff; background: #050505;"></i>
+        </div>
+
+        <div class="fragment" style="text-align: center; width: 30%;">
+            <i class="fa-solid fa-book-open-reader" style="font-size: 3em; color: #fff; border: 1px solid #555; padding: 20px; border-radius: 50%;"></i>
+            <h5 style="margin-top: 15px; color: #aaa;">PEDAGOGY</h5>
+        </div>
+
+    </div>
+
+    <!-- Methodology Note -->
+    <div class="fragment stat-box" style="margin-top: 20px; border-color: #00ff88; padding: 15px;">
+        <i class="fa-solid fa-microscope" style="color: #00ff88; margin-right: 10px;"></i>
+        <strong style="font-size: 0.7em;">METHODOLOGICAL DIVERSITY</strong>
+        <p style="font-size: 0.5em; margin: 5px 0 0 0;">Move beyond A/B Experiments <i class="fa-solid fa-arrow-right"></i> Adopt Design Science & Mixed Methods.</p>
+    </div>
+</section>
+
+<!-- SLIDE 21: CONCLUSION -->
+<section>
+    <div style="border: 1px solid #fff; padding: 40px; position: relative; margin-top: 20px;">
+        <!-- Corner Markers -->
+        <div style="position: absolute; top: -1px; left: -1px; width: 20px; height: 20px; border-top: 3px solid #00f3ff; border-left: 3px solid #00f3ff;"></div>
+        <div style="position: absolute; bottom: -1px; right: -1px; width: 20px; height: 20px; border-bottom: 3px solid #00f3ff; border-right: 3px solid #00f3ff;"></div>
+
+        <h1 style="font-size: 3em; margin-bottom: 20px;">MISSION <span class="neon-text">DEBRIEF</span></h1>
+        
+        <div style="text-align: left; max-width: 700px; margin: 0 auto; font-size: 0.8em;">
+            <p class="fragment"><i class="fa-solid fa-check" style="color: #00ff88; margin-right: 15px;"></i> <strong>STATUS:</strong> Field has matured from niche to global impact.</p>
+            <p class="fragment"><i class="fa-solid fa-triangle-exclamation" style="color: #ffd700; margin-right: 15px;"></i> <strong>PARADOX:</strong> High Technical Sophistication / Low Theoretical Maturity.</p>
+            <p class="fragment"><i class="fa-solid fa-rocket" style="color: #ff0055; margin-right: 15px;"></i> <strong>OBJECTIVE:</strong> Build the next generation with Ethics & Pedagogy at the core.</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 50px;">
+        <button class="deck-btn" onclick="location.reload()">REBOOT SYSTEM</button>
+        <p style="margin-top: 10px; font-size: 0.5em; color: #666;">END OF TRANSMISSION</p>
+    </div>
+</section>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+   <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // 1. REVEAL JS SETUP (The Slide Engine)
+        Reveal.initialize({
+            controls: false, // We built our own custom dock
+            progress: false,
+            hash: true,
+            center: true,
+            width: 1200,
+            height: 700,
+            transition: 'cube', // CRAZY 3D TRANSITION
+            backgroundTransition: 'zoom',
+        });
+
+        // Update Slide Count in Dock
+        Reveal.on('slidechanged', event => {
+            document.getElementById('slide-count').innerText = 
+                (event.indexh + 1) + " / " + Reveal.getTotalSlides();
+            
+            // TRIGGER THE ENGINE: WARP SPEED
+            boostWarpSpeed();
+        });
+
+        // Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = 
+                now.getHours().toString().padStart(2,'0') + ":" + 
+                now.getMinutes().toString().padStart(2,'0');
+        }, 1000);
+
+        // 2. THREE JS WARP ENGINE (The Background)
+        const canvas = document.getElementById('warp-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Create Star Tunnel
+        const starGeo = new THREE.BufferGeometry();
+        const starCount = 6000;
+        const posArray = new Float32Array(starCount * 3);
+        
+        for(let i=0; i<starCount; i++) {
+            posArray[i*3] = (Math.random() - 0.5) * 600; // x
+            posArray[i*3+1] = (Math.random() - 0.5) * 600; // y
+            posArray[i*3+2] = (Math.random() - 0.5) * 600; // z
+        }
+        
+        starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const starMat = new THREE.PointsMaterial({
+            color: 0x00d2ff,
+            size: 0.7,
+            transparent: true
+        });
+        const starMesh = new THREE.Points(starGeo, starMat);
+        scene.add(starMesh);
+
+        camera.position.z = 1;
+
+        // Animation Variables
+        let speed = 0.5;
+        let targetSpeed = 0.5;
+
+        // The Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Ease speed back to normal
+            speed += (targetSpeed - speed) * 0.05;
+
+            // Move stars towards camera
+            const positions = starMesh.geometry.attributes.position.array;
+            for(let i=0; i<starCount; i++) {
+                // Move Z
+                positions[i*3+2] += speed;
+
+                // Reset if behind camera
+                if(positions[i*3+2] > 200) {
+                    positions[i*3+2] = -400;
+                }
+            }
+            starMesh.geometry.attributes.position.needsUpdate = true;
+            
+            // Slight rotation
+            starMesh.rotation.z += 0.002;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // 3. THE INTERACTION: Boost speed on slide change
+        function boostWarpSpeed() {
+            speed = 20.0; // Instant Warp
+            targetSpeed = 0.5; // Drift back to normal
+            
+            // Random color shift for fun
+            const colors = [0x00d2ff, 0xff0055, 0x00ff88, 0xffaa00];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            starMesh.material.color.setHex(randomColor);
+            
+            // Update border color to match
+            const hexString = "#" + randomColor.toString(16).padStart(6, '0');
+            document.querySelectorAll('.projector-frame')[0].style.borderColor = hexString;
+        }
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+    </script>
+</body>
+</html>
