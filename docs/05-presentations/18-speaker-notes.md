@@ -4,7 +4,7 @@
 # 🗣️ یادداشت‌های سخنران: تله‌پرامپتر شخصی شما
 ### Speaker Notes: Build Your Own Teleprompter
 
-[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: ساخت اسلاید HTML](16-html-slides.md) |[منابع و پایان دوره >](../06-resources/18-resources.md)
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: ساخت اسلاید HTML](17-html-slides.md) |[منابع و پایان دوره >](../06-resources/19-resources.md)
 
 </div>
 
@@ -103,7 +103,7 @@
 
 <div align="center">
 
-**[بخش نهایی: منابع تکمیلی و معرفی ابزارهای بیشتر 👉](../06-resources/18-resources.md)**
+**[بخش نهایی: منابع تکمیلی و معرفی ابزارهای بیشتر 👉](../06-resources/19-resources.md)**
 
 </div>
 

@@ -5,7 +5,8 @@
 <div align="center">
 
 # 📚 منابع تکمیلی و جعبه‌ابزار نهایی
-### The Ultimate Resource Directory[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: یادداشت‌های سخنران](../05-presentations/17-speaker-notes.md)
+### The Ultimate Resource Directory
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: یادداشت‌های سخنران](../05-presentations/18-speaker-notes.md)
 
 </div>
 

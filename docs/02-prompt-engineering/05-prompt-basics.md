@@ -7,7 +7,7 @@
 # 🗣️ اصول اولیه پرامپت‌نویسی: زبان ماشین
 ### Prompt Basics: From Chatting to Commanding
 
-[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: ابزارهای هوش مصنوعی](../01-fundamentals/04-research-tools.md) | [درس بعدی: فریم‌ورک‌های پیشرفته >](06-advanced-frameworks.md)
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: ابزارهای هوش مصنوعی](../01-fundamentals/04-AI-tools.md) | [درس بعدی: فریم‌ورک‌های پیشرفته >](06-advanced-frameworks.md)
 
 </div>
 

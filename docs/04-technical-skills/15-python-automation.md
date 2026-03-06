@@ -7,7 +7,7 @@
 # 🤖 اتوماسیون با پایتون: استخدام یک ربات کارگر
 ### Python Automation: Let the Machine Do the Boring Work
 
-[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: جادوی HTML](13.5-html-visualization.md) |[درس بعدی: ساختار ارائه >](../05-presentations/15-presentation-structure.md)
+[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: جادوی HTML](14-html-visualization.md) |[درس بعدی: ساختار ارائه >](../05-presentations/16-presentation-structure.md)
 
 </div>
 
@@ -108,7 +108,7 @@
 
 <div align="center">
 
-**[بخش بعدی: صحنه نمایش و ساختار ارائه (خداحافظ پاورپوینت) 👉](../05-presentations/15-presentation-structure.md)**
+**[بخش بعدی: صحنه نمایش و ساختار ارائه (خداحافظ پاورپوینت) 👉](../05-presentations/16-presentation-structure.md)**
 
 </div>
 

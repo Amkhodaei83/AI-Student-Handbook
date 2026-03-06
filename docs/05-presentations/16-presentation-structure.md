@@ -6,7 +6,7 @@
 
 # 🎤 معماری ارائه: داستان‌سرایی قبل از طراحی
 ### Presentation Structure: Crafting the Storyline
-[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: اتوماسیون با پایتون](../04-technical-skills/14-python-automation.md) |[درس بعدی: ساخت اسلاید تعاملی با HTML >](16-html-slides.md)
+[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: اتوماسیون با پایتون](../04-technical-skills/15-python-automation.md) |[درس بعدی: ساخت اسلاید تعاملی با HTML >](17-html-slides.md)
 
 </div>
 
@@ -119,7 +119,7 @@ graph TD
 
 <div align="center">
 
-**[درس بعدی: ساخت اسلاید تعاملی با HTML (مرگ بر پاورپوینت) 👉](16-html-slides.md)**
+**[درس بعدی: ساخت اسلاید تعاملی با HTML (مرگ بر پاورپوینت) 👉](17-html-slides.md)**
 
 </div>
 

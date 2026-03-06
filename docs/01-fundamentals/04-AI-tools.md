@@ -5,7 +5,8 @@
 <div align="center">
 
 # 🛠️ ابزارهای هوش مصنوعی: فراتر از چت‌بات‌های ساده
-### AI Platforms & Specialized Tools[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: جنگ مدل‌ها](03-model-comparison.md) | [درس بعدی: اصول پرامپت‌نویسی >](../02-prompt-engineering/05-prompt-basics.md)
+### AI Platforms & Specialized Tools
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: جنگ مدل‌ها](03-model-comparison.md) | [درس بعدی: اصول پرامپت‌نویسی >](../02-prompt-engineering/05-prompt-basics.md)
 
 </div>
 

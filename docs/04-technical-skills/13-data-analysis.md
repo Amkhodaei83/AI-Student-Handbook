@@ -7,7 +7,7 @@
 # 📊 کیمیاگری داده‌ها: تحلیل CSV با پایتون (بدون کدنویسی)
 ### Data Analysis: From Messy Excel to Python Insights
 
-[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: راه‌اندازی محیط کار](12-environment-setup.md) |[درس بعدی: جادوی HTML و مصورسازی >](13.5-html-visualization.md)
+[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: راه‌اندازی محیط کار](12-environment-setup.md) |[درس بعدی: جادوی HTML و مصورسازی >](14-html-visualization.md)
 
 </div>
 
@@ -137,7 +137,7 @@ graph TD
 
 <div align="center">
 
-**[درس بعدی: جادوی HTML  👉](13.5-html-visualization.md)**
+**[درس بعدی: جادوی HTML  👉](14-html-visualization.md)**
 
 </div>
 

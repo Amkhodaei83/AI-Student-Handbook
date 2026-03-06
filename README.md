@@ -94,13 +94,14 @@ graph TD
 حتی اگر برنامه‌نویس نیستید، اینجا یاد می‌گیرید مثل یک هکر عمل کنید.
 *   **[`12-environment-setup.md`](docs/04-technical-skills/12-environment-setup.md)**: نصب VS Code و Python برای غیرکامپیوتری‌ها.
 *   **[`13-data-analysis.md`](docs/04-technical-skills/13-data-analysis.md)**: آپلود فایل اکسل و دریافت تحلیل‌های آماری و نمودار (بدون دانستن فرمول).
-*   **[`14-python-automation.md`](docs/04-technical-skills/14-python-automation.md)**: اجرای اسکریپت‌های ساده پایتون که هوش مصنوعی برایتان نوشته است.
+*   **[`14-html-visualization.md`](docs/04-technical-skills/14-html-visualization.md)**: نمایش و خروجی گرفتن با استفاده از زبان html 
+*   **[`15-python-automation.md`](docs/04-technical-skills/15-python-automation.md)**: اجرای اسکریپت‌های ساده پایتون که هوش مصنوعی برایتان نوشته است.
 
 ### 🎤 [مرحله ۵: صحنه نمایش (Presentation)](docs/05-presentations/)
 ارائه‌هایی که مخاطب را میخکوب می‌کند، نه خواب‌آلود.
-*   **[`15-presentation-structure.md`](docs/05-presentations/15-presentation-structure.md)**: داستان‌سराई و سناریو‌نویسی برای ارائه.
-*   **[`16-html-slides.md`](docs/05-presentations/16-html-slides.md)**: ساخت اسلایدهای تعاملی با HTML و Reveal.js (جایگزین پاورپوینت).
-*   **[`17-speaker-notes.md`](docs/05-presentations/17-speaker-notes.md)**: تولید متن سخنرانی و یادداشت‌های مخفی برای روز ارائه.
+*   **[`16-presentation-structure.md`](docs/05-presentations/16-presentation-structure.md)**: داستان‌سराई و سناریو‌نویسی برای ارائه.
+*   **[`17-html-slides.md`](docs/05-presentations/17-html-slides.md)**: ساخت اسلایدهای تعاملی با HTML و Reveal.js (جایگزین پاورپوینت).
+*   **[`18-speaker-notes.md`](docs/05-presentations/18-speaker-notes.md)**: تولید متن سخنرانی و یادداشت‌های مخفی برای روز ارائه.
 
 ---
 

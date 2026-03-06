@@ -7,7 +7,7 @@
 # 🌐 جادوی HTML: بوم نقاشی نامحدود شما
 ### The HTML Canvas: Beyond Simple Data Visualization
 
-[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: تحلیل داده با پایتون](13-data-analysis.md) |[درس بعدی: اتوماسیون با پایتون >](14-python-automation.md)
+[🏠 بازگشت به خانه](../../README.md) |[درس قبلی: تحلیل داده با پایتون](13-data-analysis.md) |[درس بعدی: اتوماسیون با پایتون >](15-python-automation.md)
 
 </div>
 
@@ -105,7 +105,7 @@ graph TD
 
 <div align="center">
 
-**[درس بعدی: اتوماسیون با پایتون (سپردن کارهای تکراری به ماشین) 👉](14-python-automation.md)**
+**[درس بعدی: اتوماسیون با پایتون (سپردن کارهای تکراری به ماشین) 👉](15-python-automation.md)**
 
 </div>
 

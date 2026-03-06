@@ -5,7 +5,8 @@
 <div align="center">
 
 # 🪄 متا-پرامپتینگ: هک کردن ماشین با ماشین
-### Prompt Generation: Let the AI Write the Prompt[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: تنظیمات سیستمی](07-system-instructions.md) | [درس بعدی: تحقیق و پژوهش دانشگاهی >](../03-research-writing/09-academic-research.md)
+### Prompt Generation: Let the AI Write the Prompt
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: تنظیمات سیستمی](07-system-instructions.md) | [درس بعدی: تحقیق و پژوهش دانشگاهی >](../03-research-writing/09-academic-research.md)
 
 </div>
 

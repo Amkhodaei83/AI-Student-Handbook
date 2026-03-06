@@ -3,7 +3,7 @@
 
 # 💻 ساخت اسلاید با HTML: مرگ بر پاورپوینت خسته‌کننده
 ### HTML Slides: Coding Your Presentation (The Hacker Way)
-[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: معماری ارائه](15-presentation-structure.md) |[درس بعدی: یادداشت‌های سخنران >](17-speaker-notes.md)
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: معماری ارائه](16-presentation-structure.md) |[درس بعدی: یادداشت‌های سخنران >](18-speaker-notes.md)
 
 </div>
 
@@ -96,7 +96,7 @@
 
 <div align="center">
 
-**[درس بعدی: یادداشت‌های سخنران و شبیه‌ساز ارائه (تله‌پرامپتر) 👉](17-speaker-notes.md)**
+**[درس بعدی: یادداشت‌های سخنران و شبیه‌ساز ارائه (تله‌پرامپتر) 👉](18-speaker-notes.md)**
 
 </div>
 

@@ -5,7 +5,8 @@
 <div align="center">
 
 # 🧬 انسانی‌سازی متن: دمیدن روح در ماشین
-### Humanizing Text & Bypassing AI Detectors[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: معماری مقاله](10-academic-writing.md) | [درس بعدی: راه‌اندازی محیط کار >](../04-technical-skills/12-environment-setup.md)
+### Humanizing Text & Bypassing AI Detectors
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: معماری مقاله](10-academic-writing.md) | [درس بعدی: راه‌اندازی محیط کار >](../04-technical-skills/12-environment-setup.md)
 
 </div>
 

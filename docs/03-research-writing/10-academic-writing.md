@@ -5,7 +5,8 @@
 <div align="center">
 
 # ✍️ نگارش متون دانشگاهی: معماری مقاله از صفر تا صد
-### Academic Writing: Drafting from Skeleton to Masterpiece[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: روش تحقیق علمی](09-academic-research.md) | [درس بعدی: انسانی‌سازی متن >](11-humanizing-text.md)
+### Academic Writing: Drafting from Skeleton to Masterpiece
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: روش تحقیق علمی](09-academic-research.md) | [درس بعدی: انسانی‌سازی متن >](11-humanizing-text.md)
 
 </div>
 

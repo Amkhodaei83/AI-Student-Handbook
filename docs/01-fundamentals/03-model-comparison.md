@@ -5,7 +5,8 @@
 <div align="center">
 
 # ⚔️ جنگ مدل‌ها: کدام هوش مصنوعی برای کار شماست؟
-### AI Models Showdown: Pick Your Weapon[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: هوش مصنوعی چطور کار می‌کند؟](02-how-llms-work.md) | [درس بعدی: ابزارهای تحقیق >](04-research-tools.md)
+### AI Models Showdown: Pick Your Weapon
+[🏠 بازگشت به خانه](../../README.md) | [درس قبلی: هوش مصنوعی چطور کار می‌کند؟](02-how-llms-work.md) | [درس بعدی: ابزارهای تحقیق >](04-AI-tools.md)
 
 </div>
 
