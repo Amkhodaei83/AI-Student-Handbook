@@ -1,142 +1,142 @@
-﻿
-<div dir="rtl">
-
 <div align="center">
 
-# 🏴‍☠️ جعبه‌ابزار هوش مصنوعی برای دانشجویان
-### The AI Student Handbook
+# 🏴‍☠️ The AI Student Handbook
+### A Practical Guide to Using AI in University
 
-**گذار از "مصرف‌کننده ساده" به "مهندس دانش".**
+**Go from a "simple user" to a "smart AI engineer."**
+
+<br>
+
+<!-- BIG BOLD BUTTON FOR PERSIAN VERSION -->
+<a href="./docs/fa/README-fa.md">
+  <img src="https://img.shields.io/badge/🇮🇷_برای_مطالعه_نسخه_فارسی_کلیک_کنید-Persian_Version-2ea44f?style=for-the-badge&logo=readme" alt="Persian Version">
+</a>
+
+<br><br>
 
 <!-- Badges -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status: Active](https://img.shields.io/badge/Status-Active-success.svg)]()
-[![Language: Persian](https://img.shields.io/badge/Language-Persian-blue.svg)]()
+[![Language: English](https://img.shields.io/badge/Language-English-blue.svg)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)]()
 
 </div>
 
 ---
 
-## 🧐 چرا این مخزن وجود دارد؟ (Manifesto)
+## 🧐 Why Does This Guide Exist?
 
-بیایید روراست باشیم: **دانشگاه‌ها عقب مانده‌اند.**
-شما در حال یادگیری مهارت‌هایی هستید که شاید تا زمان فارغ‌التحصیلی‌تان توسط هوش مصنوعی منسوخ شده باشند.
+Let's be honest: **The way we study is changing fast.** 
+You are learning skills right now that AI can already do in seconds. 
 
-از طرف دیگر، اغلب دانشجویان از هوش مصنوعی (ChatGPT) اشتباه استفاده می‌کنند. درست است که هوش مصنوعی ابزار قدرتمندی است، اما اگر ندانید چطور کار می‌کند، تبدیل به دشمن شما می‌شود.
+However, many students use AI (like ChatGPT) the wrong way. AI is a powerful tool, but if you don't know how it works, it can cause more problems than it solves.
 
-**مشکلات اصلی کجاست؟**
-1.  **توهم (Hallucination):** هوش مصنوعی با اعتماد‌به‌نفس کامل، رفرنس‌های علمی دروغین می‌سازد.
-2.  **سطحی بودن:** جواب‌ها همیشه "میانگین اینترنت" هستند و نمره ۲۰ (Outlier) نمی‌گیرند.
-3.  **قابل ردیابی:** متنی که کپی می‌کنید، یک "لحن رباتیک" دارد و ابزارهای تشخیص AI فوراً آن را لو می‌دهند.
+**What are the main mistakes students make?**
+1. **Fake Information (Hallucinations):** AI confidently makes up fake book titles and academic references.
+2. **Basic Answers:** Copy-pasting from AI usually gives you an "average" answer, which won't get you top grades.
+3. **Robotic Tone:** The text sounds unnatural, and professors or AI-checkers can easily catch it.
 
-**در این مخزن یاد می‌گیریم چطور از هوش مصنوعی "هوشمندانه‌تر" استفاده کنیم و خروجی‌هایی بگیریم که نه تنها تابلو نباشد، بلکه استاد فکر کند روزها روی آن وقت گذاشته‌اید.** =)
+**In this repository, we will learn how to use AI the right way.** We will learn how to get high-quality results that look natural, professional, and actually help you learn. =)
 
-> **نکته:** مهم نیست رشته‌تان چیست یا چقدر کامپیوتر بلدید؛ این مسیر طوری طراحی شده که حتی اگر تا حالا یک خط کد هم ننویسید، بتوانید مثل یک مهندس حرفه‌ای از آن استفاده کنید. اینجا تنها چیزی که لازم دارید **کنجکاوی** است.
+> **Note:** It doesn't matter what your major is or if you have never coded before. This guide is made for everyone. All you need is **curiosity**.
 
 ---
 
-## 🗺️ مسیر یادگیری (Roadmap)
+## 🗺️ The Roadmap 
 
-این هندبوک طوری طراحی شده که می‌توانید مستقیماً سراغ مشکل خودتان بروید. نیازی به خواندن ترتیبی نیست.
+You don't need to read this from start to finish. Just click on what you need help with right now:
 
 ```mermaid
 graph TD
-    A[شروع: مشکل شما چیست؟] --> B{تحقیق و رفرنس}
-    A --> C{نوشتن مقاله/پایان‌نامه}
-    A --> D{حل مسائل فنی/کد}
-    A --> E{ساخت پاورپوینت/ارائه}
+    A[Start: What do you need help with?] --> B{Research & Sources}
+    A --> C{Writing Essays/Papers}
+    A --> D{Data & Coding}
+    A --> E{Presentations}
 
-    B --> B1[پیدا کردن منابع واقعی]
-    B --> B2[خلاصه کردن کتاب‌های طولانی]
+    B --> B1[Find Real Academic Sources]
+    B --> B2[Summarize Long Books]
     
-    C --> C1[ساخت ساختار مقاله]
-    C --> C2[انسانی‌سازی متن]
+    C --> C1[Build a Paper Structure]
+    C --> C2[Make AI Text Sound Human]
     
-    D --> D1[تحلیل اکسل و دیتا]
-    D --> D2[اجرای کدهای پایتون]
+    D --> D1[Analyze Excel Files]
+    D --> D2[Run Simple Python Codes]
     
-    E --> E1[ساخت اسلاید با HTML]
-    E --> E2[تمرین سخنرانی]
+    E --> E1[Make HTML Slides]
+    E --> E2[Practice Your Speech]
 ```
 
 ---
 
-## 📚 محتوای دوره (What You Will Learn)
+## 📚 Course Content (What You Will Learn)
 
-این یک کتاب درسی خسته‌کننده نیست. این یک مجموعه **"دستورالعمل جنگی"** (Battle-tested Playbooks) است.
+This is a set of practical guides. Read a section, use the prompt, and see the results.
 
-### 🧠 [مرحله ۰: مقدمه و ذهنیت (Start Here)](docs/00-intro/)
-قبل از اینکه دست به کیبورد بزنید، باید بفهمید بازی چطور عوض شده است.
-*   **[`00-roadmap.md`](docs/00-intro/00-roadmap.md)**: نقشه راه استفاده از این هندبوک.
-*   **[`01-mindset-and-ethics.md`](docs/00-intro/01-mindset-and-ethics.md)**: مرز باریک بین "هوشمندی" و "سرقت ادبی". چرا استاد می‌فهمد؟
+### 🧠 [Phase 0: Start Here](./docs/en/00-intro/)
+Before using the tools, understand the rules of the game.
+*   **[`00-roadmap.md`](./docs/en/00-intro/00-roadmap.md)**: Your map for this handbook.
+*   **[`01-mindset-and-ethics.md`](./docs/en/00-intro/01-mindset-and-ethics.md)**: The line between "working smart" and "cheating." Why do professors notice AI text?
 
-### 🛠️ [مرحله ۱: زرادخانه ابزارها (The Toolkit)](docs/01-fundamentals/)
-شناخت عمیق ابزارهایی که دیگران فقط سطحی از آن‌ها استفاده می‌کنند.
-*   **[`02-how-llms-work.md`](docs/01-fundamentals/02-how-llms-work.md)**: چرا هوش مصنوعی دروغ می‌گوید؟ (مفهوم Next Token Prediction).
-*   **[`03-model-comparison.md`](docs/01-fundamentals/03-model-comparison.md)**: جنگ مدل‌ها! GPT-4o یا Claude 3.5 یا Gemini؟ کدام برای کدنویسی و کدام برای نوشتن بهتر است؟
-*   **[`04-research-tools.md`](docs/01-fundamentals/04-research-tools.md)**: معرفی ابزارهای **Perplexity** و **Consensus** برای پیدا کردن رفرنس‌های واقعی (خداحافظی با توهم).
+### 🛠️ [Phase 1: The Toolkit](./docs/en/01-fundamentals/)
+Learn about better AI tools for students.
+*   **[`02-how-llms-work.md`](./docs/en/01-fundamentals/02-how-llms-work.md)**: Why does AI lie to us? (How it predicts words).
+*   **[`03-model-comparison.md`](./docs/en/01-fundamentals/03-model-comparison.md)**: Which AI is best? GPT-4o for code, Claude for writing, or Gemini?
+*   **[`04-research-tools.md`](./docs/en/01-fundamentals/04-research-tools.md)**: Using tools like **Perplexity** and **Consensus** to find 100% real citations.
 
-### 🗣️ [مرحله ۲: مهندسی پرامپت (Prompt Engineering)](docs/02-prompt-engineering/)
-یادگیری زبان صحبت با ماشین. تبدیل "چت کردن" به "برنامه‌نویسی به زبان طبیعی".
-*   **[`05-prompt-basics.md`](docs/02-prompt-engineering/05-prompt-basics.md)**: اصول اولیه و ساختار یک دستور استاندارد.
-*   **[`06-advanced-frameworks.md`](docs/02-prompt-engineering/06-advanced-frameworks.md)**: فریم‌ورک‌های حرفه‌ای مثل **RISEN** و **CO-STAR** برای خروجی‌های دقیق.
-*   **[`07-system-instructions.md`](docs/02-prompt-engineering/07-system-instructions.md)**: تنظیمات "Custom Instructions" برای شخصی‌سازی دائمی ChatGPT.
-*   **[`08-prompt-generation.md`](docs/02-prompt-engineering/08-prompt-generation.md)**: تکنیک متا-پرامپتینگ (Meta-Prompting): از خودِ هوش مصنوعی بخواهیم برایمان پرامپت بنویسد.
+### 🗣️ [Phase 2: Prompt Engineering](./docs/en/02-prompt-engineering/)
+Learn how to talk to AI to get exactly what you want.
+*   **[`05-prompt-basics.md`](./docs/en/02-prompt-engineering/05-prompt-basics.md)**: The parts of a great AI prompt.
+*   **[`06-advanced-frameworks.md`](./docs/en/02-prompt-engineering/06-advanced-frameworks.md)**: Professional frameworks like **RISEN** and **CO-STAR**.
+*   **[`07-system-instructions.md`](./docs/en/02-prompt-engineering/07-system-instructions.md)**: How to personalize your ChatGPT so it always knows what you need.
+*   **[`08-prompt-generation.md`](./docs/en/02-prompt-engineering/08-prompt-generation.md)**: Asking the AI to write the perfect prompt for you.
 
-### ✍️ [مرحله ۳: تحقیق و نگارش (Writing & Research)](docs/03-research-writing/)
-نوشتن مقالات و پایان‌نامه‌هایی که هم علمی باشند و هم "انسانی".
-*   **[`09-academic-research.md`](docs/03-research-writing/09-academic-research.md)**: روش فیش‌برداری مدرن؛ خلاصه کردن ۵۰ مقاله در ۱۰ دقیقه.
-*   **[`10-academic-writing.md`](docs/03-research-writing/10-academic-writing.md)**: معماری مقاله؛ از ساختار (Outline) تا پاراگراف‌نویسی.
-*   **[`11-humanizing-text.md`](docs/03-research-writing/11-humanizing-text.md)**: **مهم!** تکنیک‌های دور زدن تشخیص هوش مصنوعی (AI Detection) با تزریق "نقص انسانی".
+### ✍️ [Phase 3: Research & Writing](./docs/en/03-research-writing/)
+Write better papers and make them sound like you.
+*   **[`09-academic-research.md`](./docs/en/03-research-writing/09-academic-research.md)**: How to summarize 50 papers in 10 minutes.
+*   **[`10-academic-writing.md`](./docs/en/03-research-writing/10-academic-writing.md)**: How to structure your essay from start to finish.
+*   **[`11-humanizing-text.md`](./docs/en/03-research-writing/11-humanizing-text.md)**: **Important!** How to edit AI text so it sounds human and natural.
 
-### 💻 [مرحله ۴: قدرت فنی (Technical Edge)](docs/04-technical-skills/)
-حتی اگر برنامه‌نویس نیستید، اینجا یاد می‌گیرید مثل یک هکر عمل کنید.
-*   **[`12-environment-setup.md`](docs/04-technical-skills/12-environment-setup.md)**: نصب VS Code و Python برای غیرکامپیوتری‌ها.
-*   **[`13-data-analysis.md`](docs/04-technical-skills/13-data-analysis.md)**: آپلود فایل اکسل و دریافت تحلیل‌های آماری و نمودار (بدون دانستن فرمول).
-*   **[`14-html-visualization.md`](docs/04-technical-skills/14-html-visualization.md)**: نمایش و خروجی گرفتن با استفاده از زبان html 
-*   **[`15-python-automation.md`](docs/04-technical-skills/15-python-automation.md)**: اجرای اسکریپت‌های ساده پایتون که هوش مصنوعی برایتان نوشته است.
+### 💻 [Phase 4: Technical Edge](./docs/en/04-technical-skills/)
+Learn to use AI for tech tasks, even if you are not a computer science student.
+*   **[`12-environment-setup.md`](./docs/en/04-technical-skills/12-environment-setup.md)**: A very simple guide to installing VS Code and Python.
+*   **[`13-data-analysis.md`](./docs/en/04-technical-skills/13-data-analysis.md)**: How to make charts from Excel files in seconds.
+*   **[`14-html-visualization.md`](./docs/en/04-technical-skills/14-html-visualization.md)**: Creating beautiful web visuals with AI.
+*   **[`15-python-automation.md`](./docs/en/04-technical-skills/15-python-automation.md)**: Asking AI to write and run Python scripts for you.
 
-### 🎤 [مرحله ۵: صحنه نمایش (Presentation)](docs/05-presentations/)
-ارائه‌هایی که مخاطب را میخکوب می‌کند، نه خواب‌آلود.
-*   **[`16-presentation-structure.md`](docs/05-presentations/16-presentation-structure.md)**: داستان‌سराई و سناریو‌نویسی برای ارائه.
-*   **[`17-html-slides.md`](docs/05-presentations/17-html-slides.md)**: ساخت اسلایدهای تعاملی با HTML و Reveal.js (جایگزین پاورپوینت).
-*   **[`18-speaker-notes.md`](docs/05-presentations/18-speaker-notes.md)**: تولید متن سخنرانی و یادداشت‌های مخفی برای روز ارائه.
-
----
-
-## 🚀 چطور شروع کنم؟ (Quick Start)
-
-1.  این مخزن را **Star** ⭐ کنید تا گمش نکنید.
-2.  از پوشه **[00-intro](docs/00-intro/00-roadmap.md)** شروع کنید و قدم به قدم جلو بروید.
-3.  تمرین‌ کنید. خواندن کافی نیست؛ باید دست به کیبورد شوید.
+### 🎤 [Phase 5: Presentations](./docs/en/05-presentations/)
+Make presentations that are actually fun to watch.
+*   **[`16-presentation-structure.md`](./docs/en/05-presentations/16-presentation-structure.md)**: How to tell a good story in your presentation.
+*   **[`17-html-slides.md`](./docs/en/05-presentations/17-html-slides.md)**: Building interactive slides with code instead of PowerPoint.
+*   **[`18-speaker-notes.md`](./docs/en/05-presentations/18-speaker-notes.md)**: Using AI to write your speech and speaking notes.
 
 ---
 
-## 💡 سخن پایانی (Final Thoughts)
+## 🚀 Quick Start
 
-در عصر هوش مصنوعی، مانع اصلی دیگر «جست‌وجو» یا «کدنویسی» نیست؛ مانع اصلی، **«تخیل»** و **«منطق»** شماست. ما در حال گذار از دورانی هستیم که دانشجو باید زبان کامپیوتر را یاد می‌گرفت، به دورانی که کامپیوتر بالاخره یاد گرفته است زبان ما را بفهمد.
-
-> "هوش مصنوعی جایگزین انسان نخواهد شد؛ اما انسانی که از هوش مصنوعی استفاده می‌کند، قطعاً جایگزین انسانی خواهد شد که از آن استفاده نمی‌کند."
-
-برنده نهایی، قوی‌ترین کامپیوتر یا باهوش‌ترین انسان نیست؛ برنده کسی است که **بهترین تعامل** را با ماشین دارد.
-
-روزی که ماشین حساب اختراع شد، ریاضیدانان متوقف نشدند؛ بلکه شروع به حل مسائل پیچیده‌تر کردند. امروز هوش مصنوعی **ماشین‌حسابِ عصر نوین** است. مقاومت در برابر آن، محافظت از علم نیست؛ بلکه محروم کردن خودمان از حل مسائل بزرگ‌تر است.
-
-**یادتان باشد: دی‌جی (DJ) آهنگساز نیست! شما دارید دانش موجود را «میکس» می‌کنید، نه اینکه علم جدید «خلق» کنید.**
-
-این ابزار به ما اجازه می‌دهد تا از سطح «انجام وظیفه» به سطح «خلق ارزش» صعود کنیم.
+1. **Star** ⭐ this repository so you can easily find it later.
+2. Go to the **[00-intro](./docs/en/00-intro/00-roadmap.md)** folder and start reading.
+3. **Practice!** Just reading isn't enough; open your AI tool and test the prompts yourself.
 
 ---
 
-## 🤝 مشارکت (Contributing)
+## 💡 Final Thoughts
 
-این مخزن برای دانشجویان ایرانی طراحی شده است. اگر تکنیک جدیدی یاد گرفتید یا پرامپت بهتری پیدا کردید، لطفاً آن را به اشتراک بگذارید (Pull Request).
+Today, the hardest part of university isn't "searching for information" or "coding." The hardest part is using your **imagination** and **logic**. 
+
+> "AI will not replace humans, but humans who use AI will replace humans who don't."
+
+When the calculator was invented, math didn't stop; people just started solving bigger problems. Today, **AI is the new calculator**. 
+
+**Think of yourself as a DJ.** A DJ mixes different songs to create a great track. With AI, you are mixing information and ideas to create something valuable. AI takes care of the typing, so you can focus on the thinking.
+
+---
+
+## 🤝 Contributing
+
+This handbook was made to help students everywhere. If you learn a new trick or find a great prompt, please share it with us! (Pull Requests are welcome).
 
 <div align="center">
 
-**ساخته شده با AI (و کمی قهوه ☕) برای دانشجویان**
-
-</div>
+**Built with AI (and a lot of coffee ☕) for students everywhere.**
 
 </div>
