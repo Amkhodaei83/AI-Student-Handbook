@@ -8,9 +8,11 @@
 <br>
 
 <!-- BIG BOLD BUTTON FOR PERSIAN VERSION -->
-<a href="./docs/fa/README-fa.md">
-  <img src="https://img.shields.io/badge/🇮🇷_برای_مطالعه_نسخه_فارسی_کلیک_کنید-Persian_Version-2ea44f?style=for-the-badge&logo=readme" alt="Persian Version">
-</a>
+<h3>
+  <a href="./docs/fa/README-fa.md">
+   برای مطالعه نسخه فارسی کلیک کنید
+  </a>
+</h3>
 
 <br><br>
 
